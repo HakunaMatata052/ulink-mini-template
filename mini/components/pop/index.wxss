@@ -1,0 +1,90 @@
+.popup {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 301;
+
+
+}
+
+.popup .mask {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 300;
+}
+
+.popup .popup-content {
+    position: relative;
+    z-index: 301;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.show {
+    animation-name: show;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+}
+
+
+.mask-show {
+    animation-name: maskshow;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+}
+
+.hide {
+    animation-name: hide;
+    animation-duration: .3s;
+    animation-fill-mode: forwards;
+}
+
+
+
+@keyframes maskshow {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+@keyframes show {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes hide {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+
+}

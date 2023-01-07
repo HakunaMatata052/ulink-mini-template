@@ -1,0 +1,12 @@
+<view class="popup" wx:if="{{isShow}}">
+  <view
+    class="mask {{animation=='show'?'mask-show':null}}"
+    wx:if="{{animation=='show'?true:false}}"
+    bindtap="close"
+    catchtouchmove="onMove"
+  ></view>
+  <view class="popup-content {{animation}}" catchtouchmove="onMove">
+    <slot></slot>
+  </view>
+</view>
+

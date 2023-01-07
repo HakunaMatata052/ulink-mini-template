@@ -1,0 +1,21 @@
+button,
+.btn {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-size: 0;
+  line-height: 999rpx;
+  text-indent: 999rpx;
+  overflow: hidden;
+  outline: 0;
+  background-color: transparent;
+}
+
+button::after ,picker::after{
+  border: none
+}
+
+picker::after {
+  border: 0;
+  outline: 0;
+}

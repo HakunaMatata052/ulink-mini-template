@@ -1,0 +1,381 @@
+<!--index.wxml-->
+<view class="container">
+  <view
+    class="sp float-right"
+    bindtap="dialog"
+    data-pop="3"
+  ></view>
+  <view class="bind" wx:if="{{bindInfo.partitionName}}">
+    {{bindInfo.partitionName}} {{bindInfo.roleName}}
+  </view>
+  <view class="bind" wx:else>
+    亲爱的用户，请
+    <text class="bind-text" bindtap="onBind">【绑定角色】</text>
+  </view>
+  <view class="gift-list">
+    <view class="podium">
+      <view class="podium-bg"></view>
+      <!-- <view
+        class="gift-column gift-column-{{idx+1}}"
+        wx:for="{{3}}"
+        wx:key="*this"
+        wx:for-index="idx"
+      > -->
+      <swiper
+        wx:for="{{3}}"
+        wx:key="*this"
+        wx:for-index="idx"
+        class="gift-column gift-column-{{idx+1}}"
+        indicator-dots="{{false}}"
+        circular="{{true}}"
+        interval="{{3000}}"
+        autoplay="{{true}}"
+        vertical="{{false}}"
+        current="{{current}}"
+      >
+        <block wx:for="{{homeGift[idx]}}" wx:key="*this">
+          <swiper-item>
+            <view class="gift-item">
+              <image
+                src="{{item}}"
+                class="gift-item-image"
+                mode="aspectFit"
+              ></image>
+            </view>
+          </swiper-item>
+        </block>
+        <!-- <view class="gift-item" style="transform: translateY({{machine['transY'+(idx+1)]}}px);">
+          <image
+            src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/img1.png"
+            class="gift-item-image"
+            mode="aspectFit"
+          ></image>
+        </view> -->
+      </swiper>
+      <!-- </view> -->
+    </view>
+  </view>
+  <!-- 兜底模式 -->
+  <block wx:if="{{actMode==2}}">
+    <block wx:if="{{defaultNum>0}}">
+      <view class="sp title6"></view>
+      <view class="red-envelopered {{redEnvelopeAnimation}}"></view>
+      <button class="btn sp btn-disassemble" bindtap="openRedEnvelope">
+        立即拆开
+      </button>
+    </block>
+    <block wx:else>
+      <view class="sp title7"></view>
+      <view class="red-gift">
+        <view class="red-gift-item">
+          <image
+            src="{{giftList[defaultData.sPackageId].image}}"
+            class="red-gift-image"
+            mode="aspectFit"
+          ></image>
+        </view>
+        <view class="red-gift-name">{{defaultData.sPackageName}}</view>
+      </view>
+    </block>
+  </block>
+  <!-- 组队模式 -->
+  <block wx:else>
+    <view class="sp title1"></view>
+    <view class="sp team-list">
+      <view
+        class="team-list-item {{index==0 ?'team-master':''}}"
+        wx:for="{{5}}"
+        wx:key="*this"
+      >
+        <view class="sp team-list-avatar">
+          <view class="sp avatar-border"></view>
+          <image
+            wx:if="{{teamList.list[index]}}"
+            src="{{teamList.list[index].headImg || 'https://game.gtimg.cn/images/yxzj/img201606/heroimg/198/198.jpg'}}"
+            class="team-list-image"
+            mode="aspectFit"
+          ></image>
+        </view>
+        <view class="team-list-nickname">{{teamList.list[index].nickName}}</view>
+      </view>
+    </view>
+    <!-- 领奖 -->
+    <button
+      class="btn sp btn-send-red"
+      bindtap="acceptAward"
+      wx:if="{{teamList.list.length>=maxTeamNum && teamGiftNum<=0 && teamList.isTeamMember==1}}"
+    >
+      去发红包
+    </button>
+    <!-- 领奖 -->
+    <button
+      class="btn sp btn-accept-award"
+      bindtap="acceptAward"
+      wx:elif="{{teamList.list.length>=maxTeamNum && teamGiftNum>0 && teamList.isTeamMember==1}}"
+    >
+      立即领奖
+    </button>
+    <!-- 主态加入组队 -->
+    <button
+      class="btn sp btn-join"
+      wx:elif="{{isMaster==1 && teamList.list.length==0 && teamGiftNum>0}}"
+      bindtap="onBind"
+    >
+      加入组队
+    </button>
+    <!-- 主态 邀请好友 -->
+    <button
+      wx:elif="{{isMaster==1 && teamList.list.length>0 && teamGiftNum>0}}"
+      class="btn sp btn-share-team"
+      open-type="share"
+      data-type="team"
+    >
+      邀请好友共同开启
+    </button>
+    <!-- 客态 加入组队 -->
+    <button
+      class="btn sp btn-join"
+      wx:elif="{{isMaster==2 && teamList.list.length<maxTeamNum && teamGiftNum>0 && teamList.isTeamMember==0}}"
+      bindtap="joinTeam"
+    >
+      加入组队
+    </button>
+    <!-- 客态 邀请好友 -->
+    <button
+      wx:elif="{{isMaster==2 && teamList.list.length>0 && teamGiftNum>0 && teamList.isTeamMember==1}}"
+      class="btn sp btn-share-team"
+      open-type="share"
+      data-type="team"
+    >
+      邀请好友共同开启
+    </button>
+    <button
+      class="btn sp btn-renew-team"
+      bindtap="dialog"
+      data-pop="6"
+      wx:elif="{{isMaster==2 &&teamList.length>=maxTeamNum && teamGiftNum>0 && teamList.isTeamMember==0}}"
+    >
+      队伍已满，发起新组队
+    </button>
+    <button
+      class="btn sp btn-join"
+      wx:else
+      bindtap="init"
+    >
+      加入组队
+    </button>
+
+    <view class="red-envelope-log-btn">
+      <view class="btn sp text">
+        红包记录
+      </view>
+    </view>
+  </block>
+
+  <view class="sp title2"></view>
+  <view class="box box4">
+    <image src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/ad/1.jpg" class="box-image"></image>
+  </view>
+  <button class="btn sp btn-goto">立即前往</button>
+  <!-- <view class="red-envelope-calendar">
+    <view class="calendar-item">
+      <view class="sp calendar-title1"></view>
+      <view class="sp gift-item">
+        <image
+          src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/img1.png"
+          class="gift-item-image"
+          mode="aspectFit"
+        ></image>
+      </view>
+      <button class="btn sp btn-receive">领取</button>
+    </view>
+    <view class="calendar-item">
+      <view class="sp calendar-title2"></view>
+      <view class="sp gift-item">
+        <image
+          src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/img1.png"
+          class="gift-item-image"
+          mode="aspectFit"
+        ></image>
+      </view>
+      <button class="btn sp btn-receive">领取</button>
+    </view>
+    <view class="calendar-item">
+      <view class="sp calendar-title3"></view>
+      <view class="sp gift-item">
+        <image
+          src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/img1.png"
+          class="gift-item-image"
+          mode="aspectFit"
+        ></image>
+      </view>
+      <button class="btn sp btn-receive">领取</button>
+    </view>
+    <view class="calendar-item">
+      <view class="sp calendar-title4"></view>
+      <view class="sp gift-item">
+        <image
+          src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/img1.png"
+          class="gift-item-image"
+          mode="aspectFit"
+        ></image>
+      </view>
+      <button class="btn sp btn-receive">领取</button>
+    </view>
+  </view> -->
+  <view class="sp title4"></view>
+  <view class="box box2">
+    <image src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/ad/2.jpg" class="box-image"></image>
+  </view>
+  <view class="sp title3"></view>
+  <view class="box box1">
+    <image src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/ad/2.jpg" class="box-image"></image>
+  </view>
+  <button class="btn sp btn-goto">立即前往</button>
+
+  <view class="sp title5"></view>
+  <view class="box box3">
+    <swiper indicator-dots="{{false}}" class="swiper">
+      <block wx:for="{{3}}" wx:key="*this">
+        <swiper-item>
+          <image src="https://game.gtimg.cn/images/yxzj/act/9280/a20221213hb/ad/3-1.jpg" class="box-image"></image>
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="sp swiper-btn-prev"></view>
+    <view class="sp swiper-btn-next"></view>
+  </view>
+  <view class="btn-group">
+    <view class="btn-group-item">
+      <view class="sp gzh"></view>
+      <button
+        class="btn sp btn-follow"
+        bindtap="dialog"
+        data-pop="6"
+      >王者公众号
+      </button>
+    </view>
+    <view class="btn-group-item">
+      <view class="sp sph"></view>
+      <button class="btn sp btn-follow" bindtap="gotoVideo">王者视频号</button>
+    </view>
+
+  </view>
+  <view
+    class="btn-rules"
+    bindtap="dialog"
+    data-pop="1"
+  >活动规则
+  </view>
+  <!-- <view
+    bindtap="closeDialog"
+    class="pop-mask"
+    wx:if="{{pop.type !== 0}}"
+    catchtouchmove="onMove"
+  ></view> -->
+
+  <pop show="{{pop.type === 1}}" bindclose="closeDialog">
+    <view class="pop pop1">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <scroll-view scroll-y class="content">
+        <view class="p">一、活动时间：2023年1月19日4:00～1月24日04:00</view>
+        <view class="p">二、当日登录游戏《王者荣耀》的用户可参与组队活动，队伍人数最高为5人；用户每日可参与1次组队，参与队伍的玩家可邀请好友加入组队，队伍满5人即组队成功，队伍内成员均可获得组队成功奖励“xxxx”，每人每日可领取1份；另外组队成功后，每位队伍成员将额外获得王者新年红包×5个，红包内含现金和游戏道具，可分享至微信好友或群聊天场景与好友分享进行拆开，每人每天最多可拆2次红包，拆开红包需要当日登录《王者荣耀》，敬请留意</view>
+        <view class="p">三、队伍成员状态每日凌晨4点将重置清零，创建队伍或加入队伍后，请尽快组齐队伍，及时领取奖励以及分享红包进行拆取；</view>
+        <view class="p">四、红包内奖池公示：</view>
+        <view class="p">刘禅-天才门将×2500份，大乔-猫狗日记×2500份，宫本武藏-万象初新×47500份，刘-万事如意×47500份，刘邦-圣殿之光×100000份，杨玉环-霓裳曲×100000份，公孙离-花间舞×100000份，888元现金×5份，66元现金×20份，16元现金×50份，6元现金×1000份，3元现金×2000份，2元现金×100000份，1元现金×421440份，镜×400000份，云缨×400000份，杨玉环×400000份，公孙离×400000份，张飞×400000份，太乙真人×400000份，宫本武藏×400000份，高渐离×10000份，关羽×10000份，王昭君×10000份，程咬金×10000份，马超×10000份，安琪拉×10000份，瑶×10000份，红包封面×100000，1天英雄自选宝箱×1000万份，1天皮肤自选宝箱×1000万份，3天稷下英雄体验自选包1个×1000万份，3天稷下皮肤体验自选包1个×1000万份，亲密玫瑰1个×2000万份，铭文碎片18个×5000万份一、活动时间：2023年1月19日4:00～1月24日04:00</view>
+        <view class="p">二、当日登录游戏《王者荣耀》的用户可参与组队活动，队伍人数最高为5人；用户每日可参与1次组队，参与队伍的玩家可邀请好友加入组队，队伍满5人即组队成功，队伍内成员均可获得组队成功奖励“xxxx”，每人每日可领取1份；另外组队成功后，每位队伍成员将额外获得王者新年红包×5个，红包内含现金和游戏道具，可分享至微信好友或群聊天场景与好友分享进行拆开，每人每天最多可拆2次红包，拆开红包需要当日登录《王者荣耀》，敬请留意</view>
+        <view class="p">三、队伍成员状态每日凌晨4点将重置清零，创建队伍或加入队伍后，请尽快组齐队伍，及时领取奖励以及分享红包进行拆取；</view>
+        <view class="p">四、红包内奖池公示：</view>
+        <view class="p">刘禅-天才门将×2500份，大乔-猫狗日记×2500份，宫本武藏-万象初新×47500份，刘-万事如意×47500份，刘邦-圣殿之光×100000份，杨玉环-霓裳曲×100000份，公孙离-花间舞×100000份，888元现金×5份，66元现金×20份，16元现金×50份，6元现金×1000份，3元现金×2000份，2元现金×100000份，1元现金×421440份，镜×400000份，云缨×400000份，杨玉环×400000份，公孙离×400000份，张飞×400000份，太乙真人×400000份，宫本武藏×400000份，高渐离×10000份，关羽×10000份，王昭君×10000份，程咬金×10000份，马超×10000份，安琪拉×10000份，瑶×10000份，红包封面×100000，1天英雄自选宝箱×1000万份，1天皮肤自选宝箱×1000万份，3天稷下英雄体验自选包1个×1000万份，3天稷下皮肤体验自选包1个×1000万份，英雄自选宝箱1个×200万份，7天史诗皮肤体验自选包1个×1000万份，微信新春80点券优惠卡×200万份，微信新春100点券优惠卡×100万份，微信新春288点券优惠卡×100万份，亲密玫瑰1个×2000万份，铭文碎片18个×5000万份</view>
+      </scroll-view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 2}}" bindclose="closeDialog">
+    <view class="pop pop2 {{teamGiftNum<=0?'no-team-gift':''}}">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <view class="pop2-gift">
+        <image
+          src="{{giftList[3791940].image}}"
+          class="sp pop2-gift-image"
+          mode="aspectFit"
+        ></image>
+        <view class="pop2-gift-name">{{redInfo.sPackageName}}</view>
+      </view>
+      <button
+        class="sp btn btn-share-red"
+        open-type="share"
+        data-type="red"
+      ></button>
+      <view class="time">{{expires}} 后失效</view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 3}}" bindclose="closeDialog">
+    <view class="pop pop3">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <scroll-view scroll-y class="content">
+        <view class="pop-gift-list">
+          <view
+            class="pop-gift-item"
+            wx:for="{{giftList}}"
+            wx:key="*this"
+          >
+            <image class="pop-gift-image" src="{{item.image}}" />
+            <view class="pop-gift-name">{{item.name}}</view>
+          </view>
+        </view>
+      </scroll-view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 4}}" bindclose="closeDialog">
+    <view class="pop pop4">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <view class="content pop-text">{{pop.message}}</view>
+      <button class="btn sp btn-login-game" bindtap="toGame"></button>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 5}}" bindclose="closeDialog">
+    <view class="pop pop4">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <view class="content pop-text">{{pop.message}}</view>
+      <button class="btn sp btn-new-team"></button>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 6}}" bindclose="closeDialog">
+    <view class="pop pop5">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 7}}" bindclose="closeDialog">
+    <view class="pop pop6">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 8}}" bindclose="closeDialog">
+    <view class="pop pop7">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <view class="pop-gift-list">
+        <view class="pop-gift-item">
+          <image class="pop-gift-image" src="{{giftList[defaultData.sPackageId].image}}" />
+          <view class="pop-gift-name">{{defaultData.sPackageName}}</view>
+        </view>
+      </view>
+    </view>
+  </pop>
+  <pop show="{{pop.type === 9}}" bindclose="closeDialog">
+    <view class="pop pop4">
+      <view class="sp pop-close" bindtap="closeDialog">
+      </view>
+      <view class="content pop-text">{{pop.message}}</view>
+      <button class="btn sp btn-confirm" bindtap="closeDialog"></button>
+    </view>
+  </pop>
+</view>
+
