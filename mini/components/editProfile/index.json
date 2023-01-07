@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "image-cropper": "/components/imageCropper/index",
+    "ulink-popup": "plugin://ulink-mini-ui/popup",
+    "image-upload": "plugin://ulink-mini-core/image-upload"
+  }
+}

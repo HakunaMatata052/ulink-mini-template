@@ -1,0 +1,15 @@
+<view class="nav-wrap" style='height: {{position.height + position.top}}px;opacity: {{opacity}};background:{{background}};{{customStyle}}'>
+  <ico
+    name="arrow-left"
+    color="{{color}}"
+    size="45"
+    class="back"
+    bindtap="back"
+    wx:if="{{showBack}}"
+  />
+  <view class='nav-title' style='height: {{position.height}}px;color:{{color}}'>
+    <text wx:if="{{title}}">{{title}}</text>
+    <slot wx:else></slot>
+  </view>
+</view>
+

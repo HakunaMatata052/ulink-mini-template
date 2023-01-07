@@ -1,0 +1,12 @@
+<view class="icon {{computed.rootClass(name)}} " style="color:{{color}};font-size:{{size}}rpx;width:{{size}}rpx;height:{{size}}rpx;">
+  <image
+    wx:if="{{ computed.isImage(name) }}"
+    style="width:{{size}}rpx;height:{{size}}rpx;"
+    src="{{ name }}"
+    mode="aspectFit"
+    class="icon__image"
+  />
+  <view class="icon__info icon--info-dot" wx:if="{{dot === true}}"></view>
+</view>
+<wxs src="./index.wxs" module="computed" />
+

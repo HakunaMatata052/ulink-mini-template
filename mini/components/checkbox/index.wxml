@@ -1,0 +1,32 @@
+<view class="{{direction === 'horizontal'?'checkbox-horizontal':'checkbox'}}">
+  <view
+    wx:if="{{ labelPosition === 'left' }}"
+    class="{{disabled ?'checkbox__label--disabled':''}}"
+    bindtap="toggle"
+  >
+    <slot/>
+  </view>
+  <view
+    class="checkbox__icon-wrap"
+    style="line-height:{{iconSize}}rpx"
+    bindtap="toggle"
+  >
+    <slot wx:if="{{ useIconSlot }}" name="icon" />
+    <ico
+      wx:else
+      name="success"
+      size="{{iconSize}}"
+      color="#fff"
+      class="checkbox__icon checkbox__icon--{{shape}} {{disabled?'checkbox__icon--disabled':''}} {{checked?'checkbox__icon--checked':''}}"
+      custom-style="background-color:{{color}}"
+    />
+  </view>
+  <view
+    wx:if="{{ labelPosition === 'right' }}"
+    class="{{ disabled ?'checkbox__label--disabled':''}}"
+    bindtap="toggle"
+  >
+    <slot/>
+  </view>
+</view>
+

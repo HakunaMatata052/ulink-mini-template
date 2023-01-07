@@ -1,0 +1,55 @@
+.divider {
+    align-items: center;
+    border: 0 solid var(--divider-border-color, #ebedf0);
+    color: var(--divider-text-color, #969799);
+    display: flex;
+    font-size: var(--divider-font-size, 14px);
+    line-height: var(--divider-line-height, 24px);
+    margin: var(--divider-margin, 16px 0);
+    padding:0 170rpx;
+}
+
+.divider:after,
+.divider:before {
+    border-color: inherit;
+    border-style: inherit;
+    border-width: 1px 0 0;
+    box-sizing: border-box;
+    display: block;
+    flex: 1;
+    height: 1px
+}
+
+.divider:before {
+    content: ""
+}
+
+.divider--hairline:after,
+.divider--hairline:before {
+    transform: scaleY(.5)
+}
+
+.divider--dashed {
+    border-style: dashed
+}
+
+.divider--center:before,
+.divider--left:before,
+.divider--right:before {
+    margin-right: var(--divider-content-padding, 16px)
+}
+
+.divider--center:after,
+.divider--left:after,
+.divider--right:after {
+    content: "";
+    margin-left: var(--divider-content-padding, 16px)
+}
+
+.divider--left:before {
+    max-width: var(--divider-content-left-width, 10%)
+}
+
+.divider--right:after {
+    max-width: var(--divider-content-right-width, 10%)
+}

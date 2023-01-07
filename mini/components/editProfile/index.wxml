@@ -1,0 +1,91 @@
+<ulink-popup
+  show="{{true}}"
+  showClose="{{false}}"
+  closeWhenClickMask="{{false}}"
+>
+  <view class="user-information">
+    <view class="close" bindtap="onClose"></view>
+    <view class="user-information-con">
+      <view class="user-information-title" wx:if="{{userInfo}}">编辑工具箱社区资料</view>
+      <view class="user-information-title" wx:else>请完善工具箱社区资料</view>
+      <view class="user-information-avatar" wx:if="{{editProfileClose}}">
+        <image
+          src="{{avatar}}"
+          wx:if="{{avatar}}"
+          mode="aspectFit"
+        ></image>
+        <image src="https://game.gtimg.cn/images/hyrz/act/8265/a20220713gjx/icon20.png" wx:else></image>
+      </view>
+      <button
+        wx:elif="{{useEditProfile}}"
+        class="user-information-avatar"
+        open-type="chooseAvatar"
+        bindchooseavatar="onChooseAvatar"
+      >
+        <image
+          src="{{avatar}}"
+          wx:if="{{avatar}}"
+          mode="aspectFit"
+        ></image>
+        <image src="https://game.gtimg.cn/images/hyrz/act/8265/a20220713gjx/icon20.png" wx:else></image>
+      </button>
+      <button
+        wx:else
+        class="user-information-avatar"
+        bindtap="onSelectAvatar"
+      >
+        <image
+          src="{{avatar}}"
+          wx:if="{{avatar}}"
+          mode="aspectFit"
+        ></image>
+        <image src="https://game.gtimg.cn/images/hyrz/act/8265/a20220713gjx/icon20.png" wx:else></image>
+      </button>
+      <view class="user-information-avatar-tips" wx:if="{{userInfo}}">点击修改头像</view>
+      <view class="user-information-avatar-tips" wx:else>点击上传头像/拉取微信头像</view>
+      <input
+        class="user-information-nickname"
+        type="nickname"
+        placeholder="{{nickname?'':'请输入昵称（8个字以内）'}}"
+        maxlength="8"
+        value="{{nickname}}"
+        bindinput="onInput"
+        disabled="{{editProfileClose}}"
+      >
+      </input>
+      <button class="user-information-btn gray" wx:if="{{editProfileClose || !initInfo.updateTimes}}">确认提交</button>
+      <button
+        class="user-information-btn "
+        bindtap="submit"
+        wx:elif="{{avatar && nickname}}"
+      >确认提交
+      </button>
+      <button class="user-information-btn gray" wx:else>确认提交</button>
+      <view class="user-information-tips" wx:if="{{editProfileClose}}">系统功能维护中，请稍后再试</view>
+      <view class="user-information-tips" wx:elif="{{userInfo}}">本月有{{initInfo.updateTimes || 0}}次提交机会</view>
+    </view>
+  </view>
+</ulink-popup>
+<view class="image-cropper" wx:if="{{imageCropperOptions.show}}">
+  <image-cropper
+    id="image-cropper"
+    bindload="cropperload"
+    bindimageload="loadimage"
+    bindtapcut="clickcut"
+    limit_move="{{imageCropperOptions.limit_move}}"
+    disable_rotate="{{imageCropperOptions.disable_rotate}}"
+    width="{{imageCropperOptions.width}}"
+    height="{{imageCropperOptions.height}}"
+    imgSrc="{{imageCropperOptions.src}}"
+    angle="{{imageCropperOptions.angle}}"
+    disable_width="{{imageCropperOptions.disable_width}}"
+    max_width="{{imageCropperOptions.max_width}}"
+    max_height="{{imageCropperOptions.max_height}}"
+    disable_height="{{imageCropperOptions.disable_height}}"
+    disable_ratio="{{imageCropperOptions.disable_ratio}}"
+  >
+  </image-cropper>
+  <button class="image-cropper-btn" bindtap="submitAvatar">确认提交</button>
+</view>
+<image-upload id="image-upload" options="{{imageSelectOptions}}"></image-upload>
+

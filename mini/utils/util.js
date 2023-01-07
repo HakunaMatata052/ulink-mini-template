@@ -1,57 +1,101 @@
-export const compareVersion = (v1, v2)=> {
-  v1 = v1.split('.')
-  v2 = v2.split('.')
-  const len = Math.max(v1.length, v2.length)
-  while (v1.length < len) {
-    v1.push('0')
+/**
+ * 时间格式转yyyy-MM-dd hh:mm:ss
+ * @param {Number} dateTimeStamp 时间字符串 2022-01-01 12:00:00
+ * @param {String} fmt 指定格式 yyyy-MM-dd hh:mm:ss
+ */
+export const formatTime = (timeString, fmt) => {
+  let dateTimeStamp = new Date(timeString.replace(/-/g,'/'))
+  // dateTimeStamp = new Date(Number(dateTimeStamp * 1000))
+  let o = {
+    "M+": dateTimeStamp.getMonth() + 1, //月份
+    "d+": dateTimeStamp.getDate(), //日
+    "h+": dateTimeStamp.getHours(), //小时
+    "m+": dateTimeStamp.getMinutes(), //分
+    "s+": dateTimeStamp.getSeconds(), //秒
+    "q+": Math.floor((dateTimeStamp.getMonth() + 3) / 3), //季度
+    "S": dateTimeStamp.getMilliseconds() //毫秒
   }
-  while (v2.length < len) {
-    v2.push('0')
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (dateTimeStamp.getFullYear() + "").substr(4 - RegExp.$1.length))
   }
-  for (let i = 0; i < len; i++) {
-    const num1 = parseInt(v1[i])
-    const num2 = parseInt(v2[i])
-    if (num1 > num2) {
-      return 1
-    } else if (num1 < num2) {
-      return -1
+  for (let k in o) {
+    if (new RegExp("(" + k + ")").test(fmt)) {
+      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)))
     }
   }
-  return 0
+  return fmt
 }
-export const formatSeconds = (value)=> {
-  var theTime = parseInt(value)// 秒
-  var theTime1 = 0// 分
-  var theTime2 = 0// 小时
-  if (theTime >= 60) {
-    theTime1 = parseInt(theTime / 60)
-    theTime = parseInt(theTime % 60)
-    if (theTime1 >= 60) {
-      theTime2 = parseInt(theTime1 / 60)
-      theTime1 = parseInt(theTime1 % 60)
-    }
+/**
+ * 中文时间
+ * @param {Number} dateTimeStamp 时间字符串 2022-01-01 12:00:00
+ */
+export const timeSwitchString = (timeString) => {
+  let dateTimeStamp = new Date(timeString.replace(/-/g,'/'))
+  let minute = 1000 * 60 // 把分，时，天，周，半个月，一个月用毫秒表示
+  let hour = minute * 60
+  let day = hour * 24
+  let week = day * 7
+  // let halfamonth = day * 15
+  let month = day * 30
+  let year = day * 365
+  let now = new Date().getTime() // 获取当前时间毫秒
+  let diffValue = now - dateTimeStamp // 时间差
+  let result
+  if (diffValue < 0) {
+    return
   }
-  var result = "" + parseInt(theTime)
-  if(result < 10){
-    result = '0' + result
-  }
-  if (theTime1 > 0) {
-    result = "" + parseInt(theTime1) + ":" + result
-    if(theTime1 < 10){
-      result = '0' + result
-    }
+  let minC = diffValue / minute // 计算时间差的分，时，天，周，月
+  let hourC = diffValue / hour
+  let dayC = diffValue / day
+  let weekC = diffValue / week
+  let monthC = diffValue / month
+  let yearC = diffValue / year
+  // if (monthC >= 1 && monthC <= 3) {
+  //   result = " " + parseInt(monthC) + "月前"
+  // } else if (weekC >= 1 && weekC <= 3) {
+  //   result = " " + parseInt(weekC) + "周前"
+  // } else if (dayC >= 1 && dayC <= 6) {
+  //   result = " " + parseInt(dayC) + "天前"
+  // } else
+  if (hourC >= 1 && hourC <= 23) {
+    result = " " + parseInt(hourC) + "小时前"
+  } else if (minC >= 1 && minC <= 59) {
+    result = " " + parseInt(minC) + "分钟前"
+  } else if (diffValue >= 0 && diffValue <= minute) {
+    result = "刚刚"
+  } else if (hourC>24 && yearC<1 ) {
+    result = formatTime(timeString,'MM-dd')
   }else{
-    result = '00:' + result
-  }
-  if (theTime2 > 0) {
-    result = "" + parseInt(theTime2) + ":" + result
-    if(theTime2 < 10){
-      result = '0' + result
-    }
-  }else{
-    result = '00:' + result
+    result = formatTime(timeString,'yyyy-MM-dd')
   }
   return result
+}
+/**
+ * 节流函数
+ * @param {Function} callback 回调方法
+ * @param {Number} wait 延迟时间
+ * @param {Boolean} immediate 是否立刻执行
+ */
+export const throttle = (callback, wait = 500, immediate = true)=>{
+  let timeout
+  if (typeof callback !== 'function') {
+    throw new TypeError('Expected a function')
+  }
+  return function () {
+    let context = this
+    let args = arguments
+    // if(immediate){
+    //   callback.apply(context, args)
+    // }
+    if (timeout) {
+      return
+    }
+    // 每次调用都指定timeout后再执行
+    timeout = setTimeout(() => {
+      timeout = null
+      callback.apply(context, args)
+    }, wait)
+  }
 }
 /**
  * 防抖函数
@@ -93,4 +137,40 @@ export const debounce = (callback, wait = 500, immediate = false)=>{
     timeout = null
   }
   return debounced
+}
+/**
+ * 大数处理
+ * @param {Number} c 需要处理的字符串
+ */
+export const changeBillionToCN = (c)=> {
+  // 对传参进行类型处理,非字符串进行转换
+  if(typeof(c) != "string") {
+    c = c.toString()
+  }
+  // 对参数进行判断,
+  if(c.split(".")[0].length >= 3 && c.split(".")[0].length < 4) {
+    return(c / 1000).toFixed(2)+"千"
+  } else if(c.split(".")[0].length >= 4 && c.split(".")[0].length < 8) {
+    return(c / 10000).toFixed(2)+"万"
+  } else if(c.split(".")[0].length >= 8 && c.split(".")[0].length < 13) {
+    return(c / 100000000).toFixed(2)+"亿"
+  } else if(c.split(".")[0].length >= 13) {
+    return(c / 1000000000000).toFixed(2)+"兆"
+  }
+}
+/**
+ * 验证手机号
+ * @param {string} content
+ */
+export const isPhone = function (content) {
+  return /^1[3|4|5|7|8|9][0-9]\d{8}$/.test(content)
+}
+/**
+ * 数组去重
+ * @param {array} arr
+ * @param {string} uniId
+ */
+export const uniqueFunc = function (arr, uniId){
+  const res = new Map()
+  return arr.filter((item) => !res.has(item[uniId.split('.')[0]][uniId.split('.')[1]]) && res.set(item[uniId.split('.')[0]][uniId.split('.')[1]], 1))
 }

@@ -1,8 +1,5 @@
 {
-  "navigationBarBackgroundColor":"#d85b3b",
-  "backgroundColor": "#d85b3b",
   "usingComponents": {
-    "pop":"/components/pop/index",
-    "ulink-role-selector": "plugin://ulink-mini-core/roleSelector"
+    "pop":"/components/pop/index"
   }
 }

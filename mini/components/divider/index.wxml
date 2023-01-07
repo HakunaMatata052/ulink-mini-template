@@ -1,0 +1,4 @@
+<view class="divider divider--{{contentPosition}} {{dashed?'divider--dashed':''}}  {{hairline?'divider--hairline':''}}" style="border-color:{{borderColor}};color:{{textColor}};font-size:{{fontSize}}rpx;{{customStyle}}">
+  <slot/>
+</view>
+

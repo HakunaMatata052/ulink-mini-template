@@ -1,0 +1,105 @@
+.user-information {
+    position: relative;
+    width: 512rpx;
+    padding: 35rpx 40rpx 30rpx;
+    background-color: #ffffff;
+    border-radius: 12px;
+}
+
+.user-information .close {
+    width: 30rpx;
+    height: 30rpx;
+    position: absolute;
+    top: 20rpx;
+    right: 20rpx;
+    background: url(https://game.gtimg.cn/images/hyrz/act/8265/a20220713gjx/close.png) no-repeat center center/21rpx 19rpx;
+}
+
+.user-information-title {
+    font-size: 30rpx;
+    color: #ebb270;
+    margin-bottom: 30rpx;
+    text-align: center;
+}
+
+.user-information-avatar {
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+
+.user-information-avatar-tips {
+    font-size: 22rpx;
+    color: #adb2b7;
+    text-align: center;
+    margin: 15rpx 0;
+}
+
+.user-information-avatar image {
+    display: block;
+    width: 207rpx;
+    height: 207rpx;
+    border-radius: 50%;
+}
+
+.user-information-nickname {
+    font-size: 20rpx;
+    color: #3d444c;
+    height: 54rpx;
+    background-color: #f6f7f8;
+    border-radius: 27rpx;
+    text-align: center;
+    margin-bottom: 25rpx;
+}
+
+.user-information-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 175rpx;
+    height: 62rpx;
+    background-color: #ebb270;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    color: #ffffff;
+    margin: auto;
+}
+
+
+.user-information-tips {
+    font-size: 16rpx;
+    color: #d1d1d1;
+    text-align: center;
+    margin: 10rpx;
+}
+
+.image-cropper {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10005;
+    background-color: #000;
+}
+
+.image-cropper-btn {
+    position: absolute;
+    z-index: 10;
+    bottom: 20rpx;
+    left: 50%;
+    margin-left: -87.5rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 175rpx;
+    height: 62rpx;
+    background-color: #ebb270;
+    border-radius: 12rpx;
+    font-size: 28rpx;
+    color: #ffffff;
+}
+
+.gray {
+    filter: grayscale(100%);
+}

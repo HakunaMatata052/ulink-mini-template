@@ -1,0 +1,12 @@
+<view class="empty" style="{{customStyle}}">
+  <ico
+    name="{{icon}}"
+    size="{{iconSize}}"
+    wx:if="{{icon!=''}}"
+  />
+  <view class="desc" style="color:{{color}}">
+    <slot></slot>
+    <text>{{desc}}</text>
+  </view>
+</view>
+

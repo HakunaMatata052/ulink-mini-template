@@ -1,0 +1,19 @@
+function isImage(name) {
+  return name.indexOf('/') !== -1
+}
+function dot(val) {
+  return typeof val
+}
+function rootClass(name) {
+  var classes = []
+  if (isImage(name)) {
+    classes.push('icon--image')
+  } else {
+    classes.push('icon-' + name)
+  }
+  return classes.join(' ')
+}
+module.exports = {
+  isImage: isImage,
+  rootClass: rootClass,
+}

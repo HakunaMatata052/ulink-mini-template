@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "ico": "/components/ico/index"
+  }
+}

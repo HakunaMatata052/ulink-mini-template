@@ -1,0 +1,37 @@
+<button
+  style="{{customStyle}}"
+  wx:if="{{userInfo}}"
+  catchtap="onClick"
+>
+  <slot></slot>
+</button>
+<block wx:else>
+  <button
+    style="{{customStyle}}"
+    wx:if="{{useEditProfile}}"
+    catchtap="showEditProfile"
+  >
+    <slot></slot>
+  </button>
+  <block>
+    <button
+      style="{{customStyle}}"
+      wx:if="{{canIUseGetUserProfile}}"
+      catchtap="getUserProfile"
+    >
+      <slot></slot>
+    </button>
+    <button
+      style="{{customStyle}}"
+      wx:else
+      open-type="getUserInfo"
+      catchgetuserinfo="getUserInfo"
+    >
+      <slot></slot>
+    </button>
+  </block>
+</block>
+<root-portal wx:if="{{editProfileShow}}" enable="{{true}}">
+  <editProfile bindclose="hideEditProfile" bindgetUserInfo="getEditProfile" />
+</root-portal>
+

@@ -1,16 +1,13 @@
 {
     "pages": [
-        "pages/index/index",
-        "pages/receive/receive",
-        "pages/log/log",
-        "pages/webview/webview"
+        "pages/index/index"
     ],
     "window": {
         "backgroundTextStyle": "light",
-        "navigationBarBackgroundColor": "#d85b3b",
-        "navigationBarTitleText": "王者荣耀组队赢新年红包",
+        "navigationBarBackgroundColor": "#000",
+        "navigationBarTitleText": "",
         "navigationBarTextStyle": "white",
-        "backgroundColor": "#d85b3b"
+        "backgroundColor": "#fff"
     },
     "plugins": {
         "ulink-mini-core": {
@@ -18,6 +15,5 @@
             "provider": "wx2595a11c6779402f"
         }
     },
-    "embeddedAppIdList": ["wx4a0a73ec028e47d7"],
     "sitemapLocation": "sitemap.json"
 }

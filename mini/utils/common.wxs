@@ -1,0 +1,13 @@
+function subNickName(nickName,length) {
+  if(typeof nickName != 'string') return
+  var _length = length || 8
+  _length = Number(_length)
+  if(nickName.length>_length){
+    return nickName.substring(0,_length) + '...'
+  }else{
+    return nickName
+  }
+}
+module.exports = {
+  subNickName: subNickName
+}
