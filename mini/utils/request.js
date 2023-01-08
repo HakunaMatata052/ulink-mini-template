@@ -9,41 +9,50 @@ class Request {
   // maxRefresh:number // 最大熔断次数
   constructor(){
   }
-  async http(route, data = {}, options){
+  async http(route, data = {}, options={}){
     this.route = route
     this.data = data
-    this.options = {
+    const config = {
       method: 'post',
       errAlert: true,
       resAlert: false,
       loading: true,
-      maxRefresh: 2,
+      refresh:1,
+      maxRefresh: 5,
+      refreshTimeOut:1000,
       type:'ulink',
       ...options
     }
-    this.maxRefresh = this.options.maxRefresh
+    this.options = config
+    let res // 每次请求返回的的正确结果
+    let err // 每次请求返回的的错误结果
+    let requireRetry = false
     this.showLoading()
     try{
-      const res = await this.HttpClient()
+      res = await this.HttpClient(config)
+    }catch(error){
+      err = error
+      requireRetry = true
+    }
+    if(requireRetry&&config.refresh<config.maxRefresh){
+      config.refresh++
+      await this.sleep(config.refreshTimeOut)
+      console.log(`第${config.refresh}次重试`)
+      res = await this.http(route, data,config)
+    }else{
       this.hideLoading()
       if(res){
         this.toast('resAlert',res.sMsg || res.rawData.sMsg || res.data.sMsg)
-        return Promise.resolve(res)
       }else{
-        this.toast('errAlert',res.sMsg)
-        return Promise.reject(res)
+        this.toast('errAlert',err.sMsg||'系统繁忙，请稍后再试～')
       }
-    }catch(err){
-      this.hideLoading()
-      this.toast('errAlert',err.sMsg||'系统繁忙，请稍后再试～')
-      app.data.error = err
-      return Promise.reject(err)
     }
+    return res
   }
-  async HttpClient(){
-    if(this.options.type=='ulink') {
+  async HttpClient(config){
+    if(config.type=='ulink') {
       return new Promise((resolve,reject)=>{
-        Ulink.http[this.options.method](this.route, this.data).then(res=>{
+        Ulink.http[config.method](this.route, this.data).then(res=>{
           if(res.rawData.iRet==0){
             console.log('请求成功：' + '\n ' + this.route + ' \n ' + res.rawData.sULinkSerial + ' \n ', res.rawData)
             resolve(res)
@@ -73,7 +82,15 @@ class Request {
             console.log('请求成功：' + '\n ' + this.route + ' \n other \n ' , data)
             resolve(data)
           },
-          fail:reject,
+          fail:(err)=>{
+            const data ={
+              iRet: -1,
+              sMsg: "ERR",
+              jData: JSON.stringify(err)
+            }
+            console.error('请求失败：' + '\n ' + this.route + ' \n other \n ' , data)
+            reject(data)
+          },
         })
       })
     }
@@ -87,9 +104,9 @@ class Request {
   }
   showLoading(){
     if(typeof this.options.loading ==='boolean' && this.options.loading){
-      message.loading()
+      message.loading('',false)
     }else if(typeof this.options.loading ==='string' ){
-      message.loading(this.options.loading)
+      message.loading(this.options.loading,false)
     }
   }
   hideLoading(){
@@ -107,4 +124,4 @@ class Request {
     }
   }
 }
-export default Request
+export default new Request()

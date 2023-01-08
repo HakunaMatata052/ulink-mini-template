@@ -45,6 +45,9 @@ message.loading = function(content,timeout = 5000){
     mask:true
   })
   // 超时后自动隐藏loading
+  if(typeof timeout === 'boolean' && timeout === false){
+    return
+  }
   setTimeout(() => {
     message.hideLoading()
   }, timeout)
