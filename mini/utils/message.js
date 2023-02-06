@@ -39,18 +39,17 @@ message.confirm = function(content,confirm=()=>{},cancel=()=>{}){
     }
   })
 }
-message.loading = function(content,timeout = 5000){
+message.loading = function(content,timeout){
   wx.showLoading({
     title: content||'',
     mask:true
   })
   // 超时后自动隐藏loading
-  if(typeof timeout === 'boolean' && timeout === false){
-    return
+  if(typeof timeout === 'number'){
+    setTimeout(() => {
+      message.hideLoading()
+    }, timeout)
   }
-  setTimeout(() => {
-    message.hideLoading()
-  }, timeout)
 }
 message.hideLoading = function(content){
   wx.hideLoading()
