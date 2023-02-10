@@ -40,9 +40,7 @@ Page({
   },
   sleep(timeout) {
     return new Promise(resolve => {
-      setTimeout(() => {
-        resolve()
-      }, timeout)
+      setTimeout(resolve, timeout)
     })
   },
 })

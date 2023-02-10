@@ -4,23 +4,23 @@
  * @param {String} fmt 指定格式 yyyy-MM-dd hh:mm:ss
  */
 export const formatTime = (timeString, fmt) => {
-  let dateTimeStamp = new Date(timeString.replace(/-/g,'/'))
-  // dateTimeStamp = new Date(Number(dateTimeStamp * 1000))
+  let date = new Date(timeString.replace(/-/g,'/'))
   let o = {
-    "M+": dateTimeStamp.getMonth() + 1, //月份
-    "d+": dateTimeStamp.getDate(), //日
-    "h+": dateTimeStamp.getHours(), //小时
-    "m+": dateTimeStamp.getMinutes(), //分
-    "s+": dateTimeStamp.getSeconds(), //秒
-    "q+": Math.floor((dateTimeStamp.getMonth() + 3) / 3), //季度
-    "S": dateTimeStamp.getMilliseconds() //毫秒
+    "M+": date.getMonth() + 1,
+    "d+": date.getDate(),
+    "h+": date.getHours(),
+    "m+": date.getMinutes(),
+    "s+": date.getSeconds(),
+    "q+": Math.floor((date.getMonth() + 3) / 3),
+    "S": date.getMilliseconds()
   }
   if (/(y+)/.test(fmt)) {
-    fmt = fmt.replace(RegExp.$1, (dateTimeStamp.getFullYear() + "").substr(4 - RegExp.$1.length))
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + "").substr(4 - RegExp.$1.length))
   }
-  for (let k in o) {
-    if (new RegExp("(" + k + ")").test(fmt)) {
-      fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)))
+  for (let key in o) {
+    if (new RegExp("(" + key + ")").test(fmt)) {
+      let value = (o[key] < 10 ? "0" : "") + o[key]
+      fmt = fmt.replace(RegExp.$1, value)
     }
   }
   return fmt
