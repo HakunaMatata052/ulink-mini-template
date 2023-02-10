@@ -1,8 +1,5 @@
-import {store} from '../utils/store'
-import Request from '../utils/request'
 import message from '../utils/message'
-import config from '../utils/config'
-const Ulink = requirePlugin('ulink-mini-core')
+import {ulinkCore} from './utils/ulinkSDK'
 const _page = Page
 Page = function (pageConfig) {
   // 添加navbar高度属性
@@ -32,18 +29,18 @@ Page = function (pageConfig) {
       // 计时开始
       startTime = Date.now()
       const routeName = this.route.split('/')[2]
-      let adtag = `${config.init.game}.gongjuxiang.${routeName}.show`
+      let adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.show`
       if(this.options.id){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.id}.show`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.id}.show`
       }
       if(this.options.type){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.type}.show`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.type}.show`
       }
-      Ulink.easReportADTAG({
+      ulinkCore.easReportADTAG({
         e_code: '',
         adtag,
-        actid: config.init.iActId,
-        acttype: "ulink",
+        actid: ulinkCore.config.iActId,
+        acttype: "ulinkCore",
       })
       _pageOS && _pageOS.call(this, e)
     }
@@ -57,18 +54,18 @@ Page = function (pageConfig) {
       const stayTime = endTime - startTime
       const routeName = this.route.split('/')[2]
       // 计时结束 开始上报
-      let adtag = `${config.init.game}.gongjuxiang.${routeName}.duration`
+      let adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.duration`
       if(this.options.id){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.id}.duration`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.id}.duration`
       }
       if(this.options.type){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.type}.duration`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.type}.duration`
       }
-      Ulink.easReportADTAG({
+      ulinkCore.easReportADTAG({
         e_code: stayTime,
         adtag,
-        actid: config.init.iActId,
-        acttype: "ulink",
+        actid: ulinkCore.config.iActId,
+        acttype: "ulinkCore",
       })
       _pageOH && _pageOH.call(this, e)
     }
@@ -82,18 +79,18 @@ Page = function (pageConfig) {
       const stayTime = endTime - startTime
       const routeName = this.route.split('/')[2]
       // 计时结束 开始上报
-      let adtag = `${config.init.game}.gongjuxiang.${routeName}.duration`
+      let adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.duration`
       if(this.options.id){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.id}.duration`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.id}.duration`
       }
       if(this.options.type){
-        adtag = `${config.init.game}.gongjuxiang.${routeName}.${this.options.type}.duration`
+        adtag = `${ulinkCore.config.game}.gongjuxiang.${routeName}.${this.options.type}.duration`
       }
-      Ulink.easReportADTAG({
+      ulinkCore.easReportADTAG({
         e_code: stayTime,
         adtag,
-        actid: config.init.iActId,
-        acttype: "ulink",
+        actid: ulinkCore.config.iActId,
+        acttype: "ulinkCore",
       })
       _pageOU && _pageOU.call(this, e)
     }
@@ -102,11 +99,11 @@ Page = function (pageConfig) {
   pageConfig.EAS = function(e){
     const pages = getCurrentPages()
     const {name , code} = e.currentTarget ? e.currentTarget.dataset : e
-    Ulink.easReportADTAG({
+    ulinkCore.easReportADTAG({
       e_code: code || '',
-      adtag: `${config.init.game}.gongjuxiang.${name}`,
-      actid: config.init.iActId,
-      acttype: "ulink",
+      adtag: `${ulinkCore.config.game}.gongjuxiang.${name}`,
+      actid: ulinkCore.config.iActId,
+      acttype: "ulinkCore",
     })
   }
   // 添加全局页面跳转方法

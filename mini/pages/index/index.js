@@ -1,6 +1,4 @@
 import {getInit} from '../../utils/apis'
-import message from '../../utils/message'
-const ulinkCore = requirePlugin('ulink-mini-core')
 Page({
   isFirst:true,
   data: {

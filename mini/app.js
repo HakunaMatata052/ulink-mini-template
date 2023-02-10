@@ -1,5 +1,4 @@
-const ulinkCore = requirePlugin('ulink-mini-core')
-// const ulinkUI = requirePlugin('ulink-mini-ui')
+import {ulinkCore,ulinkUI} from './utils/ulinkSDK'
 const options = {
   sAppId: 'ULINK-CSQS-772427', // Ulink 活动的 AppId
   iActId: '', // Ulink 活动 Id
@@ -10,7 +9,7 @@ const options = {
   wx, // wx对象必须传递
 }
 ulinkCore.init(options)
-// ulinkUI.init(options)
+ulinkUI.init(options)
 App({
   data:{
     error:{}

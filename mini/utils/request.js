@@ -1,6 +1,6 @@
 import message from "./message"
 import log from "./log"
-const Ulink = requirePlugin("ulink-mini-core")
+import {ulinkCore} from './utils/ulinkSDK'
 async function request(route, data = {}, options = {}){
   const config = {
     route,
@@ -13,7 +13,7 @@ async function request(route, data = {}, options = {}){
     refresh: 1,
     maxRefresh: 0, // 默认不重试
     refreshTimeOut: 1000,
-    type: "ulink",
+    type: "ulinkCore",
     ...options,
   }
   let res // 每次请求返回的的正确结果
@@ -63,12 +63,12 @@ async function HttpClient(config) {
     if(!config.activityId){
       throw new Error('activityId为空')
     }
-    await Ulink.checkLogin()
+    await ulinkCore.checkLogin()
     let openId = wx.getStorageSync("openid")
     return new Promise((resolve, reject) => {
-      Ulink.http[config.method](
+      ulinkCore.http[config.method](
         `https://x8m8.ams.game.qq.com/ams/ame/amesvr?ameVersion=0.3&sServiceType=${
-          Ulink.config.game
+          ulinkCore.config.game
         }&iActivityId=${config.activityId}`,
         {
           iActivityId: config.activityId,
@@ -108,9 +108,9 @@ async function HttpClient(config) {
           reject(err)
         })
     })
-  } else if (config.type == "ulink") {
+  } else if (config.type == "ulinkCore") {
     return new Promise((resolve, reject) => {
-      Ulink.http[config.method](config.route, config.data)
+      ulinkCore.http[config.method](config.route, config.data)
         .then((res) => {
           if (res.rawData.iRet == 0) {
             console.log(

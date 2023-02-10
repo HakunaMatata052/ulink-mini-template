@@ -2,7 +2,7 @@ import { createStoreBindings } from "../../miniprogram_npm/mobx-miniprogram-bind
 import { store } from "../../utils/store"
 import message from '../../utils/message'
 import {getAdverList} from '../../utils/apis'
-const Ulink = requirePlugin('ulink-mini-core')
+import {ulinkCore} from './utils/ulinkSDK'
 const componentOptions = {
   // 组件选项
   options: {
@@ -155,7 +155,7 @@ const componentOptions = {
     },
     attached() {
       const {SDKVersion} = wx.getSystemInfoSync()
-      if(Ulink.CONSTS.isWechat && Ulink.checkVersion(SDKVersion,'2.21.2')===1){
+      if(ulinkCore.CONSTS.isWechat && ulinkCore.checkVersion(SDKVersion,'2.21.2')===1){
         // 新规则-头像昵称填写
         this.setData({
           useEditProfile:true

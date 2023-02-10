@@ -1,5 +1,5 @@
-var log = wx.getRealtimeLogManager ? wx.getRealtimeLogManager() : null
-module.exports = {
+const log = wx.getRealtimeLogManager ? wx.getRealtimeLogManager() : null
+export default {
   debug() {
     if (!log) return
     log.debug.apply(log, arguments)
