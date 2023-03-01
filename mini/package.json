@@ -6,7 +6,9 @@
   "main": "app.js",
   "scripts": {
     "lint": "eslint --ext .js,.wxs .",
-    "fix": "eslint --fix --ext .js,.wxs ."
+    "fix": "eslint --fix --ext .js,.wxs .",
+    "prepare": "cd .. && husky install mini/.husky",
+    "lint-staged": "lint-staged"
   },
   "dependencies": {
     "eslint": "^8.30.0",
@@ -15,5 +17,10 @@
     "husky": "^8.0.0",
     "prettier": "^2.8.4",
     "lint-staged": "^13.1.2"
+  },
+  "lint-staged": {
+    "*.{js,wxs}": [
+      "eslint --cache --fix --ext .js,.wxs"
+    ]
   }
 }
